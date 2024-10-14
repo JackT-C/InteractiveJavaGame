@@ -266,7 +266,6 @@ public class Game extends JFrame {
             underwaterCavern.addEnemy(new Enemy("Giant Crab", 18, 8));
         }
 
-        // Add NPCs to Rooms
         mysticalGrove.addFriendlyNPC(new FriendlyNPC("Elf", "Welcome to the mystical grove, traveler."));
         mysticalGrove.addFriendlyNPC(new FriendlyNPC("Druid", "The ancient spirits watch over this grove, guiding those who seek harmony with nature."));
         enchantedCavern.addFriendlyNPC(new FriendlyNPC("Dwarf", "Ho there, friend! Care for a pint of ale?"));
@@ -281,18 +280,15 @@ public class Game extends JFrame {
         underwaterCavern.addFriendlyNPC(new FriendlyNPC("Mermaid", "Welcome, surface dweller! Are you here to explore the wonders of the deep? Beware, for the ocean holds many secrets."));
     }
 
-    // Method to display the current room's details
     private void displayCurrentRoom() {
         gameText.setText(currentRoom.getTitle() + "\n" + currentRoom.getDescription());
 
-        // Show available exits
         StringBuilder exits = new StringBuilder("Exits: ");
         for (String exit : currentRoom.getExits().keySet()) {
             exits.append(exit).append(" ");
         }
         gameText.append("\n" + exits.toString());
 
-        // Show available items
         List<Item> items = currentRoom.getItems();
         if (!items.isEmpty()) {
             gameText.append("\nItems in the room:");
@@ -300,8 +296,6 @@ public class Game extends JFrame {
                 gameText.append("\n- " + item.getName() + ": " + item.getDescription());
             }
         }
-
-        // Show available NPCs
         List<FriendlyNPC> npcs = currentRoom.getFriendlyNPCs();
         if (!npcs.isEmpty()) {
             gameText.append("\nNPCs in the room:");
@@ -309,8 +303,6 @@ public class Game extends JFrame {
                 gameText.append("\n- " + npc.getName());
             }
         }
-
-        // Show enemies
         List<Enemy> enemies = currentRoom.getEnemies();
         if (!enemies.isEmpty()) {
             gameText.append("\nEnemies in the room:");
@@ -333,7 +325,6 @@ public class Game extends JFrame {
         JOptionPane.showMessageDialog(this, map, "Game Map", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    // Method to handle movement between rooms
     private void move() {
         String direction = JOptionPane.showInputDialog(this, "Which direction?");
         Room nextRoom = currentRoom.getExit(direction);
@@ -345,38 +336,42 @@ public class Game extends JFrame {
         }
     }
 
-    // Method to interact with NPCs in the current room
     private void interactWithNPC() {
         List<FriendlyNPC> npcs = currentRoom.getFriendlyNPCs();
         if (!npcs.isEmpty()) {
-            FriendlyNPC npc = npcs.get(0);  // For simplicity, interact with the first NPC
+            FriendlyNPC npc = npcs.get(0);
             gameText.setText(npc.getName() + ": " + npc.getGreeting());
         } else {
             gameText.setText("There is no one to interact with.");
         }
     }
 
-    // Method to handle item pickup
     private void takeItem() {
         List<Item> items = currentRoom.getItems();
         if (!items.isEmpty()) {
-            Item item = items.get(0);  // For simplicity, take the first item
-            inventory.add(item);
-            currentRoom.removeItem(item); // Remove the item from the room
-            gameText.setText("You took the " + item.getName() + ".");
-            playerXP += 10; // Example XP gain for taking an item
-            checkLevelUp(); // Check for level up after gaining XP
+            String[] itemNames = items.stream().map(Item::getName).toArray(String[]::new);
+            String selectedItemName = (String) JOptionPane.showInputDialog(this, "Select an item to take:", "Take Item", JOptionPane.QUESTION_MESSAGE, null, itemNames, itemNames[0]);
+            if (selectedItemName != null) {
+                Item selectedItem = items.stream().filter(i -> i.getName().equals(selectedItemName)).findFirst().orElse(null);
+                if (selectedItem != null) {
+                    inventory.add(selectedItem);
+                    currentRoom.removeItem(selectedItem);
+                    gameText.setText("You took the " + selectedItem.getName() + ".");
+                    playerXP += 10;
+                    checkLevelUp();
+                }
+            }
         } else {
             gameText.setText("There are no items to take.");
         }
     }
 
-    // Method to check for level up
+
     private void checkLevelUp() {
         if (playerXP >= playerMaxXP) {
             playerLevel++;
-            playerXP -= playerMaxXP; // Reset XP for the next level
-            playerMaxXP += 50; // Increase max XP for the next level
+            playerXP -= playerMaxXP;
+            playerMaxXP += 50;
             gameText.append("\nCongratulations! You've leveled up to Level " + playerLevel + "!");
         }
     }
@@ -416,19 +411,19 @@ public class Game extends JFrame {
     }
 
 
-
-
     private void loadGame() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("savefile.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("savegame.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(":");
-                switch (parts[0]) {
-                    case "playerHealth" -> playerHealth = Integer.parseInt(parts[1]);
-                    case "playerXP" -> playerXP = Integer.parseInt(parts[1]);
-                    case "playerLevel" -> playerLevel = Integer.parseInt(parts[1]);
-                    case "playerMaxXP" -> playerMaxXP = Integer.parseInt(parts[1]);
-                    case "inventory" -> inventory = new ArrayList(List.of(parts[1].split(",")));
+                if (parts.length < 2) continue;
+                switch (parts[0].trim()) {
+                    case "Player Health" -> playerHealth = Integer.parseInt(parts[1].trim());
+                    case "Player Attack" -> playerAttack = Integer.parseInt(parts[1].trim());
+                    case "Player XP" -> playerXP = Integer.parseInt(parts[1].trim());
+                    case "Player Level" -> playerLevel = Integer.parseInt(parts[1].trim());
+                    case "Inventory" -> loadInventory(reader);
+                    case "Current Room" -> currentRoom = getRoomByName(parts[1].trim());
                 }
             }
             gameText.setText("Game Loaded!");
@@ -439,8 +434,33 @@ public class Game extends JFrame {
         }
     }
 
+    private void loadInventory(BufferedReader reader) throws IOException {
+        String line;
+        inventory.clear();
+        while ((line = reader.readLine()) != null && !line.isEmpty()) {
+            String itemName = line.trim();
+            Item item = getItemByName(itemName);
+            if (item != null) {
+                inventory.add(item);
+            }
+        }
+    }
 
+    private Item getItemByName(String itemName) {
+        for (Item item : currentRoom.getItems()) {
+            if (item.getName().equalsIgnoreCase(itemName)) {
+                return item;
+            }
+        }
+        return null;
+    }
 
+    private Room getRoomByName(String roomName) {
+        if (currentRoom.getTitle().equalsIgnoreCase(roomName)) {
+            return currentRoom;
+        }
+        return startingRoom;
+    }
 
     private void attack() {
         List<Enemy> enemies = currentRoom.getEnemies();
@@ -450,11 +470,20 @@ public class Game extends JFrame {
             gameText.setText("You attacked the " + enemy.getName() + " for " + playerAttack + " damage!");
             if (enemy.isDefeated()) {
                 gameText.append("\nThe " + enemy.getName() + " is defeated!");
+                currentRoom.removeEnemy(enemy);
+            } else {
+                playerHealth -= enemy.getAttackPower();
+                gameText.append("\nThe " + enemy.getName() + " attacked you back!");
+                if (playerHealth <= 0) {
+                    gameText.append("\nYou have been defeated!");
+
+                }
             }
         } else {
             gameText.setText("There are no enemies to attack.");
         }
     }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new Game().setVisible(true));

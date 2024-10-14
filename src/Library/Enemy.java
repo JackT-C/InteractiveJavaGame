@@ -27,4 +27,9 @@ public class Enemy {
         return health <= 0;
     }
 
+    public int getAttackPower() {
+        return attackDamage;
+    }
+
+
 }

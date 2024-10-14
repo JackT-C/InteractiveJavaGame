@@ -69,4 +69,7 @@ public class Room {
     public void removeItem(Item item) {
         items.remove(item);
     }
+    public void removeEnemy(Enemy enemy){
+        enemies.remove(enemy);
+    }
 }

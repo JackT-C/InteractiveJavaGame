@@ -1,10 +1,8 @@
 Player Health: 100
 Player Attack: 10
-Player XP: 40
+Player XP: 20
 Player Level: 1
 Inventory: 
 Silver Dagger
 Elven Bow
-Ancient Tome
-Ornate Staff
-Current Room: Forgotten Temple
+Current Room: Dragon Lair

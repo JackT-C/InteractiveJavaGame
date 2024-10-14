@@ -1,4 +1,0 @@
-playerHealth:100
-playerXP:0
-playerLevel:1
-playerMaxXP:100
