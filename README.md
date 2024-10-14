@@ -1,20 +1,43 @@
 Interactive Fiction Game documentation:
+
+
 Github Link:
 https://github.com/JackT-C/InteractiveJavaGame
+
+
+
 Overview
 -	This interactive fiction game is a text-based exploration game where players can interact with a variety of rooms, all containing items, NPCs (non-playable characters) and enemies.
 -	The main requirements of this task are to convey a story to the user, give the user freedom to explore the map and to demonstrate interesting techniques/methods.
 Changes Made
 -	Introduction of GUI:
+
+
+
+
+
+
 ![image](https://github.com/user-attachments/assets/52995d2f-4ca2-4dee-a0e7-1ae06779b1df)
 o	As seen above instead of having user inputs which could lead to many errors, there are now clean buttons at the bottom which allow quicker and more responsive gameplay
 o	Room Description and exits are displayed, along with items available, NPCs, and enemies
 -	Dark Mode Feature:
+
+
+
+
+
+
 ![image](https://github.com/user-attachments/assets/536c5075-df1c-4866-ba93-a24e2e4e458b)
 -	Save and Load Game Functionality:
 o	As seen above when dark mode is pressed the theme switches to a dark grey and black theme
 o	Allows the user to switch back to light mode, this improves accessibility
 -	Map Visualisation using ASCII art:
+
+
+
+
+
+
 ![image](https://github.com/user-attachments/assets/c2316a1d-9b95-4993-8ddd-3b2a1bfe447f)
 -	Implementation of Friendly NPCs, the choice to add friendly NPCs, as well as enemies was because this will make each room feel more unique and improve the story telling aspect of the game.
 -	Implementation of Enemies, this mechanic introduces combat to the game, it is a simple turn-based system where the player can attack the enemy then the enemy attacks the player until one is defeated.
