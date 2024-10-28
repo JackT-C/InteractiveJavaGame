@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 public class Room {
-    private String title;
-    private String description;
-    private Map<String, Room> exits;
-    private List<Item> items;
-    private List<Enemy> enemies;
-    private List<FriendlyNPC> friendlyNPCs;
+    private final String title;
+    private final String description;
+    private final Map<String, Room> exits;
+    private final List<Item> items;
+    private final List<Enemy> enemies;
+    private final List<FriendlyNPC> friendlyNPCs;
 
     public Room(String title, String description) {
         this.title = title;

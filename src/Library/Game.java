@@ -7,21 +7,30 @@ import java.util.*;
 import java.util.List;
 
 public class Game extends JFrame {
-    private JTextArea gameText;
-    private JButton lookButton, moveButton, interactButton, takeItemButton, attackButton, mapButton, inventoryButton, saveButton, loadButton, darkmodeButton;
-    private JPanel buttonPanel;
+    public static JTextArea gameText;
+    private final JButton lookButton;
+    private final JButton moveButton;
+    private final JButton interactButton;
+    private final JButton takeItemButton;
+    private final JButton attackButton;
+    private final JButton mapButton;
+    private final JButton inventoryButton;
+    private final JButton saveButton;
+    private final JButton loadButton;
+    private final JButton darkmodeButton;
+    private final JPanel buttonPanel;
     private Room currentRoom;
     private Room startingRoom;
-    private List<Item> inventory;
+    private final List<Item> inventory;
     private boolean isDarkMode = false;
-    private int playerHealth, playerAttack, playerXP, playerLevel;
-    private int playerMaxXP;
+
 
     public Game() {
         setTitle("Adventure Game");
         setSize(500, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+
 
         gameText = new JTextArea();
         gameText.setEditable(false);
@@ -57,11 +66,6 @@ public class Game extends JFrame {
 
 
         inventory = new ArrayList<>();
-        playerHealth = 100;
-        playerAttack = 10;
-        playerXP = 0;
-        playerLevel = 1;
-        playerMaxXP = 100;
 
         createRooms();
         currentRoom = startingRoom;
@@ -287,7 +291,7 @@ public class Game extends JFrame {
         for (String exit : currentRoom.getExits().keySet()) {
             exits.append(exit).append(" ");
         }
-        gameText.append("\n" + exits.toString());
+        gameText.append("\n" + exits);
 
         List<Item> items = currentRoom.getItems();
         if (!items.isEmpty()) {
@@ -341,6 +345,7 @@ public class Game extends JFrame {
         if (!npcs.isEmpty()) {
             FriendlyNPC npc = npcs.get(0);
             gameText.setText(npc.getName() + ": " + npc.getGreeting());
+            Player.addExperience(20);
         } else {
             gameText.setText("There is no one to interact with.");
         }
@@ -357,8 +362,7 @@ public class Game extends JFrame {
                     inventory.add(selectedItem);
                     currentRoom.removeItem(selectedItem);
                     gameText.setText("You took the " + selectedItem.getName() + ".");
-                    playerXP += 10;
-                    checkLevelUp();
+                    Player.addExperience(30);
                 }
             }
         } else {
@@ -367,14 +371,6 @@ public class Game extends JFrame {
     }
 
 
-    private void checkLevelUp() {
-        if (playerXP >= playerMaxXP) {
-            playerLevel++;
-            playerXP -= playerMaxXP;
-            playerMaxXP += 50;
-            gameText.append("\nCongratulations! You've leveled up to Level " + playerLevel + "!");
-        }
-    }
 
 
     private void displayInventory() {
@@ -392,10 +388,9 @@ public class Game extends JFrame {
 
     private void saveGame() {
         try (FileWriter writer = new FileWriter("savegame.txt")) {
-            writer.write("Player Health: " + playerHealth + "\n");
-            writer.write("Player Attack: " + playerAttack + "\n");
-            writer.write("Player XP: " + playerXP + "\n");
-            writer.write("Player Level: " + playerLevel + "\n");
+            writer.write("Player Health: " + Player.getHealth() + "\n");
+            writer.write("Player Attack: " + Player.getPlayerAttack() + "\n");
+            writer.write("Player Level: " + Player.getLevel() + "\n");
 
             writer.write("Inventory: \n");
             for (Item item : inventory) {
@@ -418,10 +413,9 @@ public class Game extends JFrame {
                 String[] parts = line.split(":");
                 if (parts.length < 2) continue;
                 switch (parts[0].trim()) {
-                    case "Player Health" -> playerHealth = Integer.parseInt(parts[1].trim());
-                    case "Player Attack" -> playerAttack = Integer.parseInt(parts[1].trim());
-                    case "Player XP" -> playerXP = Integer.parseInt(parts[1].trim());
-                    case "Player Level" -> playerLevel = Integer.parseInt(parts[1].trim());
+                    case "Player Health" -> Player.health = Integer.parseInt(parts[1].trim());
+                    case "Player Attack" -> Player.playerAttack = Integer.parseInt(parts[1].trim());
+                    case "Player Level" -> Player.level = Integer.parseInt(parts[1].trim());
                     case "Inventory" -> loadInventory(reader);
                     case "Current Room" -> currentRoom = getRoomByName(parts[1].trim());
                 }
@@ -463,18 +457,22 @@ public class Game extends JFrame {
     }
 
     private void attack() {
+        //heals player to full and sets base attack before attacking enemy
+        Player.health = 100;
+        Player.playerAttack = 20;
         List<Enemy> enemies = currentRoom.getEnemies();
         if (!enemies.isEmpty()) {
             Enemy enemy = enemies.get(0);
-            enemy.takeDamage(playerAttack);
-            gameText.setText("You attacked the " + enemy.getName() + " for " + playerAttack + " damage!");
+            enemy.takeDamage(Player.playerAttack);
+            gameText.setText("You attacked the " + enemy.getName() + " for " + Player.playerAttack + " damage!");
             if (enemy.isDefeated()) {
                 gameText.append("\nThe " + enemy.getName() + " is defeated!");
+                Player.addExperience(50);
                 currentRoom.removeEnemy(enemy);
             } else {
-                playerHealth -= enemy.getAttackPower();
+                Player.takeDamage(enemy.getAttackPower());
                 gameText.append("\nThe " + enemy.getName() + " attacked you back!");
-                if (playerHealth <= 0) {
+                if (Player.getHealth() <= 0) {
                     gameText.append("\nYou have been defeated!");
 
                 }

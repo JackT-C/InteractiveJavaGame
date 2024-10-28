@@ -1,8 +1,15 @@
-Player Health: 100
-Player Attack: 10
-Player XP: 20
-Player Level: 1
+Player Health: 220
+Player Attack: 20
+Player Level: 11
 Inventory: 
 Silver Dagger
 Elven Bow
-Current Room: Dragon Lair
+Crystal Amulet
+Glowing Mushrooms
+Crystal Shard
+Luminous Coral
+Stolen Loot
+Goblin Ale
+Ice Shard
+Frostbitten Relics
+Current Room: Frozen Tundra

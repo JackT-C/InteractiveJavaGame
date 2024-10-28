@@ -1,9 +1,9 @@
 package Library;
 
 public class Enemy {
-    private String name;
+    private final String name;
     private int health;
-    private int attackDamage;
+    private final int attackDamage;
 
     public Enemy(String name, int health, int attackDamage) {
         this.name = name;

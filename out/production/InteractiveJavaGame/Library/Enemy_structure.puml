@@ -1,0 +1,185 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 6,
+    "backwardDepth": 6,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "Library.Enemy",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1830861979 { 
+   	label=Library
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   Enemy1830861979[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Enemy</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   attackDamage: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   health: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   name: String [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ takeDamage(damage: int)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Game1830861979[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Game</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   attackButton: JButton [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   buttonPanel: JPanel [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   currentRoom: Room [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   darkmodeButton: JButton [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   interactButton: JButton [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   inventory: List&lt;Item&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   inventoryButton: JButton [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   isDarkMode: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   loadButton: JButton [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   lookButton: JButton [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mapButton: JButton [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   moveButton: JButton [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   saveButton: JButton [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   startingRoom: Room [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   takeItemButton: JButton [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- attack()</TD></TR>
+<TR><TD ALIGN="LEFT" >- createRooms()</TD></TR>
+<TR><TD ALIGN="LEFT" >- darkMode()</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayCurrentRoom()</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayInventory()</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayMap()</TD></TR>
+<TR><TD ALIGN="LEFT" >- getItemByName(itemName: String): Item</TD></TR>
+<TR><TD ALIGN="LEFT" >- getRoomByName(roomName: String): Room</TD></TR>
+<TR><TD ALIGN="LEFT" >- interactWithNPC()</TD></TR>
+<TR><TD ALIGN="LEFT" >- loadGame()</TD></TR>
+<TR><TD ALIGN="LEFT" >- loadInventory(reader: BufferedReader)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ main(args: String[])</TD></TR>
+<TR><TD ALIGN="LEFT" >- move()</TD></TR>
+<TR><TD ALIGN="LEFT" >- saveGame()</TD></TR>
+<TR><TD ALIGN="LEFT" >- takeItem()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Room1830861979[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Room</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   description: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   enemies: List&lt;Enemy&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   exits: Map&lt;String, Room&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   friendlyNPCs: List&lt;FriendlyNPC&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   items: List&lt;Item&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   title: String [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ addEnemy(enemy: Enemy)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ addExit(direction: String, room: Room)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ addFriendlyNPC(npc: FriendlyNPC)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ addItem(item: Item)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getExit(direction: String): Room</TD></TR>
+<TR><TD ALIGN="LEFT" >+ removeEnemy(enemy: Enemy)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ removeItem(item: Item)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+'edges    
+Game1830861979 -> Room1830861979[label="currentRoom
+[0..1]"];
+Game1830861979 -> Room1830861979[label="startingRoom
+[0..1]"];
+Room1830861979 -> Enemy1830861979[label="enemies
+[0..*]"];
+    
+}
+@enduml

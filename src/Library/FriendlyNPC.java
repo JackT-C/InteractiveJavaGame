@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FriendlyNPC {
-    private String name;
-    private String greeting;
-    private Map<String, String> responses;
+    private final String name;
+    private final String greeting;
+    private final Map<String, String> responses;
 
     public FriendlyNPC(String name, String greeting) {
         this.name = name;
