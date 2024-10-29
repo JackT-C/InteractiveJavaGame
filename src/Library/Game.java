@@ -300,6 +300,9 @@ public class Game extends JFrame {
                 gameText.append("\n- " + item.getName() + ": " + item.getDescription());
             }
         }
+        else{
+            gameText.append("\nThere are no more items in the room.");
+        }
         List<FriendlyNPC> npcs = currentRoom.getFriendlyNPCs();
         if (!npcs.isEmpty()) {
             gameText.append("\nNPCs in the room:");
@@ -313,6 +316,9 @@ public class Game extends JFrame {
             for (Enemy enemy : enemies) {
                 gameText.append("\n- " + enemy.getName() + " (Health: " + enemy.getHealth() + ")");
             }
+        }
+        else{
+            gameText.append("\nThere are no enemies in this room.");
         }
     }
 
@@ -394,10 +400,11 @@ public class Game extends JFrame {
 
             writer.write("Inventory: \n");
             for (Item item : inventory) {
-                writer.write(item.getName() + "\n");
+                writer.write(item.getName() + " | " + item.getDescription() + "\n");  // Save name and description
             }
 
-            writer.write("Current Room: " + currentRoom.getTitle() + "\n");
+            writer.write("Current Room Title: " + currentRoom.getTitle() + "\n");
+            writer.write("Current Room Description: " + currentRoom.getDescription() + "\n");
             JOptionPane.showMessageDialog(this, "Game saved successfully!");
 
         } catch (IOException e) {
@@ -407,54 +414,64 @@ public class Game extends JFrame {
 
 
     private void loadGame() {
+        createRooms();
+        String roomTitle = null;
+        String roomDescription = null;
         try (BufferedReader reader = new BufferedReader(new FileReader("savegame.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(":");
-                if (parts.length < 2) continue;
-                switch (parts[0].trim()) {
-                    case "Player Health" -> Player.health = Integer.parseInt(parts[1].trim());
-                    case "Player Attack" -> Player.playerAttack = Integer.parseInt(parts[1].trim());
-                    case "Player Level" -> Player.level = Integer.parseInt(parts[1].trim());
-                    case "Inventory" -> loadInventory(reader);
-                    case "Current Room" -> currentRoom = getRoomByName(parts[1].trim());
+                if (line.startsWith("Player Health:")) {
+                    Player.health = Integer.parseInt(line.split(":")[1].trim());
+                } else if (line.startsWith("Player Attack:")) {
+                    Player.playerAttack = Integer.parseInt(line.split(":")[1].trim());
+                } else if (line.startsWith("Player Level:")) {
+                    Player.level = Integer.parseInt(line.split(":")[1].trim());
+                } else if (line.startsWith("Inventory:")) {
+                    loadInventory(reader);
+                } else if (line.startsWith("Current Room Title:")) {
+                    roomTitle = line.split(":")[1].trim();
+                } else if (line.startsWith("Current Room Description:")) {
+                    roomDescription = line.split(":")[1].trim();
                 }
             }
-            gameText.setText("Game Loaded!");
-            displayCurrentRoom();
+            if (roomTitle != null && roomDescription != null) {
+                currentRoom = new Room(roomTitle, roomDescription);
+            }
         } catch (IOException e) {
             gameText.setText("Failed to load the game.");
             e.printStackTrace();
+        } catch (NumberFormatException e) {
+            gameText.setText("Error parsing numeric values in save file.");
+            e.printStackTrace();
         }
+        gameText.setText("Game Loaded!");
+        displayCurrentRoom();
     }
 
     private void loadInventory(BufferedReader reader) throws IOException {
-        String line;
         inventory.clear();
-        while ((line = reader.readLine()) != null && !line.isEmpty()) {
-            String itemName = line.trim();
-            Item item = getItemByName(itemName);
-            if (item != null) {
+        String line;
+
+        reader.mark(1000);
+        while ((line = reader.readLine()) != null) {
+            if (line.contains(":")) {
+                reader.reset();
+                break;
+            }
+
+            if (!line.trim().isEmpty()) {
+                String[] parts = line.split("\\|");
+                String name = parts[0].trim();
+                String description = parts.length > 1 ? parts[1].trim() : "";
+                Item item = new Item(name, description);
                 inventory.add(item);
             }
+
+            reader.mark(1000);
         }
     }
 
-    private Item getItemByName(String itemName) {
-        for (Item item : currentRoom.getItems()) {
-            if (item.getName().equalsIgnoreCase(itemName)) {
-                return item;
-            }
-        }
-        return null;
-    }
 
-    private Room getRoomByName(String roomName) {
-        if (currentRoom.getTitle().equalsIgnoreCase(roomName)) {
-            return currentRoom;
-        }
-        return startingRoom;
-    }
 
     private void attack() {
         //heals player to full and sets base attack before attacking enemy

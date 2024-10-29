@@ -1,15 +1,9 @@
-Player Health: 220
-Player Attack: 20
-Player Level: 11
+Player Health: 80
+Player Attack: 0
+Player Level: 4
 Inventory: 
-Silver Dagger
-Elven Bow
-Crystal Amulet
-Glowing Mushrooms
-Crystal Shard
-Luminous Coral
-Stolen Loot
-Goblin Ale
-Ice Shard
-Frostbitten Relics
-Current Room: Frozen Tundra
+Silver Dagger | A finely crafted dagger with a silver blade.
+Elven Bow | A bow of exquisite craftsmanship, said to be favored by elven archers.
+Stolen Loot | Various trinkets and treasures pilfered by goblin raiders.
+Current Room Title: Mystical Grove
+Current Room Description: You stand in a serene grove surrounded by ancient trees with glowing leaves.
