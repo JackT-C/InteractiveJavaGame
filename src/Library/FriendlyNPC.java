@@ -30,6 +30,7 @@ public class FriendlyNPC {
         return greeting;
     }
 
+    //for future use
     public String respond(String input) {
         return responses.getOrDefault(input.toLowerCase(), "I'm sorry, I don't understand that.");
     }

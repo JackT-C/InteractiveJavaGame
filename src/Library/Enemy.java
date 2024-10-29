@@ -1,6 +1,7 @@
 package Library;
 
 public class Enemy {
+    //Enemy Class with enemy attributes
     private final String name;
     private int health;
     private final int attackDamage;

@@ -1,75 +1,28 @@
 package Library;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Room {
-    private final String title;
-    private final String description;
-    private final Map<String, Room> exits;
-    private final List<Item> items;
-    private final List<Enemy> enemies;
-    private final List<FriendlyNPC> friendlyNPCs;
+    //Room class storing roomtype, may update later to include more
+    private final RoomType roomType;
+    private Map<String, Room> exits;
 
-    public Room(String title, String description) {
-        this.title = title;
-        this.description = description;
+    public Room(RoomType roomType) {
+        this.roomType = roomType;
         this.exits = new HashMap<>();
-        this.items = new ArrayList<>();
-        this.enemies = new ArrayList<>();
-        this.friendlyNPCs = new ArrayList<>();
     }
 
-    public void addExit(String direction, Room room) {
-        exits.put(direction, room);
+    //for future use
+    public RoomType getRoomType() {
+        return roomType;
     }
-
-    public Map<String, Room> getExits() {
-        return exits;
-    }
-
+    //for future use
     public Room getExit(String direction) {
         return exits.get(direction);
     }
-
-    public void addItem(Item item) {
-        items.add(item);
-    }
-
-    public List<Item> getItems() {
-        return items;
-    }
-
-    public void addEnemy(Enemy enemy) {
-        enemies.add(enemy);
-    }
-
-    public List<Enemy> getEnemies() {
-        return enemies;
-    }
-
-    public void addFriendlyNPC(FriendlyNPC npc) {
-        friendlyNPCs.add(npc);
-    }
-
-    public List<FriendlyNPC> getFriendlyNPCs() {
-        return friendlyNPCs;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void removeItem(Item item) {
-        items.remove(item);
-    }
-    public void removeEnemy(Enemy enemy){
-        enemies.remove(enemy);
-    }
 }
+
+
+
+

@@ -1,9 +1,8 @@
-Player Health: 80
-Player Attack: 0
-Player Level: 4
+Player Health: 100
+Player Attack: 20
+Player Level: 2
 Inventory: 
 Silver Dagger | A finely crafted dagger with a silver blade.
-Elven Bow | A bow of exquisite craftsmanship, said to be favored by elven archers.
-Stolen Loot | Various trinkets and treasures pilfered by goblin raiders.
-Current Room Title: Mystical Grove
-Current Room Description: You stand in a serene grove surrounded by ancient trees with glowing leaves.
+Ancient Tome | A dusty tome containing forgotten knowledge.
+Current Room Title: Dragon Lair
+Current Room Description: A massive cavern with molten lava flows and the echoes of a distant dragon's roar.

@@ -1,13 +1,14 @@
 package Library;
 
 public class Player {
+    //player class with player attributes
     public static int level;
     private static int experience;
     public static int health;
     private static int maxHealth;
     public static int playerAttack;
 
-    public Player(String name) {
+    public Player() {
         level = 1;
         experience = 0;
         maxHealth = 100;
@@ -39,7 +40,7 @@ public class Player {
 
     private static int getXpThreshold() {
         // XP required increases with each level to make each level harder
-        return level * 10;
+        return level * 100;
     }
 
 
