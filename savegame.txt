@@ -1,8 +1,7 @@
 Player Health: 100
 Player Attack: 20
-Player Level: 2
+Player Level: 1
 Inventory: 
-Silver Dagger | A finely crafted dagger with a silver blade.
-Ancient Tome | A dusty tome containing forgotten knowledge.
-Current Room Title: Dragon Lair
-Current Room Description: A massive cavern with molten lava flows and the echoes of a distant dragon's roar.
+Coral Necklace | A necklace crafted from colorful ocean coral.
+Current Room Title: Underwater Cavern
+Current Room Description: Submerged beneath the ocean's surface, this cavern teems with bioluminescent creatures.
